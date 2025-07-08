@@ -1,0 +1,793 @@
+<html>
+<head>
+	<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="stylesheet" href="report.css" type="text/css"/>
+	<title>Web Wireframe - visualizar animal adopcion</title>
+	<script type="text/javascript" src="report.js"></script>
+	<script type="text/javascript" src="link_popup.js"></script>
+	<script type="text/javascript" src="tooltip.js"></script>
+</head>
+<body style="margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 10px;" onload="initPage();initDiagram();initWireframeDiagram();">
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_top">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-top: 2px #FF0000 solid;" id="spotlight_bottom">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_left">
+	</div>
+	<div style="position:absolute; z-index:2; visibility:hidden;border-left: 2px #FF0000 solid;" id="spotlight_right">
+	</div>
+	<canvas width="100" style="position:absolute; z-index:2; visibility:hidden" id="spotlight_c" height="100">
+	</canvas>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesTop">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; width:100px; height:100px; z-index:1; visibility:hidden" id="spotLightResourcesRight">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tr>
+				<td>
+<a href="#top"><img style="border:none" src="../images/icons/BackToTop.gif" alt="Back to top"/></a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:clearSpotLightFromOpenSpecButton();"><img style="border:none" src="../images/icons/OpenSpecification.gif" alt="Open specification"/></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute;z-index:4;visibility:hidden" id="linkPopupMenuLayer">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="linkPopupMenuTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="referenceIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Ref.gif" style="border:none" onclick="movePopupPositionToReferenceIconPosition();resetPopupForReference();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="subdiagramIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Subdiagram.gif" style="border:none" onclick="movePopupPositionToSubdiagramIconPosition();resetPopupForSubdiagram();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="transitorIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Transitor.gif" style="border:none" onclick="movePopupPositionToTransitorIconPosition();resetPopupForTransitor();switchPopupShowHideStatus();" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="position:absolute; z-index:1; visibility:hidden; " id="documentationIconLayer">
+		<table border="0" cellpadding="3" cellspacing="0" style="font-size:1;">
+			<tr>
+				<td>
+					<img src="../images/icons/Documentation.png" style="border:none" />				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="HeaderText">
+		Vetasoft_	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="HeaderLine1">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine2">
+			</td>
+		</tr>
+		<tr>
+			<td class="HeaderLine3">
+			</td>
+		</tr>
+	</table>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="referencedBys">
+		<table border="0" width="100%" style="border-style:solid; border-width:1px; border-color:#000000; background:#FFFFFF; width:250px" id="referencedBysTable">
+		</table>
+	</div>
+	<div style="position:absolute; z-index:21; visibility:hidden" id="vplink">
+		<table border="1" cellpadding="0" cellspacing="0" bordercolor="#A9BFD3">
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0">
+						<tr style="background:#DDDDDD">
+							<td style="font-size: 12px;" align="left">
+								<select onchange="vpLinkToggleName()" id="vplink-linkType">
+	<option value="Project Link">Project Link</option>
+	<option value="Page URL">Page URL</option>
+</select>
+							</td>
+							<td style="font-size: 12px;" align="right">
+								<input onclick="javascript: vpLinkToggleName()" id="vplink-checkbox" type="checkbox" />
+								<label for="vplink-checkbox">with Name</label>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<textarea id="vplink-text" style="width: 348px; height: 60px; border-color: #7EADD9; outline: none;"></textarea>				</td>
+			</tr>
+		</table>
+	</div>
+	<p class="PageTitle">
+		<span id="PageTitleText">
+			Web Wireframe - visualizar animal adopcion		</span>
+<a onclick="javascript: showVpLink('Vetasoft_.vpp://diagram/35nyZ.mGAqAABhQX', 'visualizar animal adopcion\nVetasoft_.vpp://diagram/35nyZ.mGAqAABhQX', 'visualizar animal adopcion', this); return false;" style="padding-left: 16px; font-size: 12px" href="#"><img src="../images/icons/link.png" border="0"> link</a>	</p>
+	<div style="position: relative; padding-bottom: 20px;">
+		<table border="0" cellpadding="0" width="auto" cellspacing="0" style="position: absolute; top: 0; left: 0; z-index: 20;">
+			<tr>
+				<td>
+<a href="javascript:showWireframeStatesDialog()"><span class="TableContent ItemLink">Show State Overview</span></a>				</td>
+				<td width="10px">
+				</td>
+				<td>
+					<table border="0" cellpadding="0" width="100%" cellspacing="0" id="selectShapev5nyZ.mGAqAABhQZ">
+						<tr>
+							<td>
+<span class="TableContent">Jump to:</span>								<select class="TableContent" onChange="scrollWin('diagramv5nyZ.mGAqAABhQZ', this.value);hideLinkPopup();showSpotLight('diagramv5nyZ.mGAqAABhQZ', this.value)">
+<option value="">Please select an element</option>
+<option value="shape|2.0|2.0|1024.0|768.0|#v5nyZ.mGAqAABhQZ;8FnyZ.mGAqAABhQa|#v5nyZ.mGAqAABhQZ;8FnyZ.mGAqAABhQa|8FnyZ.mGAqAABhQa" id="option8FnyZ.mGAqAABhQa">Web Browser : Browser</option>
+<option value="shape|803.0|81.0|194.0|30.0|#v5nyZ.mGAqAABhQZ;tzUKZ.mGAqAABhQ7|#v5nyZ.mGAqAABhQZ;tzUKZ.mGAqAABhQ7|tzUKZ.mGAqAABhQ7" id="optiontzUKZ.mGAqAABhQ7">Badge : Badge</option>
+<option value="shape|25.0|164.0|796.0|22.0|#v5nyZ.mGAqAABhQZ;Gn8qZ.mGAqAABhV1|#v5nyZ.mGAqAABhQZ;Gn8qZ.mGAqAABhV1|Gn8qZ.mGAqAABhV1" id="optionGn8qZ.mGAqAABhV1">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|157.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;W1hqZ.mGAqAABhWL|#v5nyZ.mGAqAABhQZ;W1hqZ.mGAqAABhWL|W1hqZ.mGAqAABhWL" id="optionW1hqZ.mGAqAABhWL">Ver : Button</option>
+<option value="shape|675.0|81.0|102.0|30.0|#v5nyZ.mGAqAABhQZ;rEraZ.mGAqAABhcE|#v5nyZ.mGAqAABhQZ;rEraZ.mGAqAABhcE|rEraZ.mGAqAABhcE" id="optionrEraZ.mGAqAABhcE">Combo Box : Combo Box</option>
+<option value="shape|553.0|81.0|95.0|30.0|#v5nyZ.mGAqAABhQZ;djY6Z.mGAqAABhd4|#v5nyZ.mGAqAABhQZ;djY6Z.mGAqAABhd4|djY6Z.mGAqAABhd4" id="optiondjY6Z.mGAqAABhd4">Agregar : Button</option>
+<option value="shape|43.0|82.0|671.0|50.0|#v5nyZ.mGAqAABhQZ;YD06Z.mGAqAABheR|#v5nyZ.mGAqAABhQZ;YD06Z.mGAqAABheR|YD06Z.mGAqAABheR" id="optionYD06Z.mGAqAABheR">Listado de animales : Label</option>
+<option value="shape|25.0|204.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;Pq56Z.mGAqAABhhK|#v5nyZ.mGAqAABhQZ;Pq56Z.mGAqAABhhK|Pq56Z.mGAqAABhhK" id="optionPq56Z.mGAqAABhhK">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|196.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;4a56Z.mGAqAABhhP|#v5nyZ.mGAqAABhQZ;4a56Z.mGAqAABhhP|4a56Z.mGAqAABhhP" id="option4a56Z.mGAqAABhhP">Ver : Button</option>
+<option value="shape|25.0|244.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;RNF6Z.mGAqAABhhc|#v5nyZ.mGAqAABhQZ;RNF6Z.mGAqAABhhc|RNF6Z.mGAqAABhhc" id="optionRNF6Z.mGAqAABhhc">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|236.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;nNF6Z.mGAqAABhhh|#v5nyZ.mGAqAABhQZ;nNF6Z.mGAqAABhhh|nNF6Z.mGAqAABhhh" id="optionnNF6Z.mGAqAABhhh">Ver : Button</option>
+<option value="shape|25.0|284.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;otF6Z.mGAqAABhhl|#v5nyZ.mGAqAABhQZ;otF6Z.mGAqAABhhl|otF6Z.mGAqAABhhl" id="optionotF6Z.mGAqAABhhl">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|276.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;CtF6Z.mGAqAABhhq|#v5nyZ.mGAqAABhQZ;CtF6Z.mGAqAABhhq|CtF6Z.mGAqAABhhq" id="optionCtF6Z.mGAqAABhhq">Ver : Button</option>
+<option value="shape|25.0|318.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;dq16Z.mGAqAABhh9|#v5nyZ.mGAqAABhQZ;dq16Z.mGAqAABhh9|dq16Z.mGAqAABhh9" id="optiondq16Z.mGAqAABhh9">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|311.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;Xq16Z.mGAqAABhiC|#v5nyZ.mGAqAABhQZ;Xq16Z.mGAqAABhiC|Xq16Z.mGAqAABhiC" id="optionXq16Z.mGAqAABhiC">Ver : Button</option>
+<option value="shape|25.0|358.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;Aa16Z.mGAqAABhiG|#v5nyZ.mGAqAABhQZ;Aa16Z.mGAqAABhiG|Aa16Z.mGAqAABhiG" id="optionAa16Z.mGAqAABhiG">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|351.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;Ua16Z.mGAqAABhiL|#v5nyZ.mGAqAABhQZ;Ua16Z.mGAqAABhiL|Ua16Z.mGAqAABhiL" id="optionUa16Z.mGAqAABhiL">Ver : Button</option>
+<option value="shape|25.0|398.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;Ca16Z.mGAqAABhiP|#v5nyZ.mGAqAABhQZ;Ca16Z.mGAqAABhiP|Ca16Z.mGAqAABhiP" id="optionCa16Z.mGAqAABhiP">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|391.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;6a16Z.mGAqAABhiU|#v5nyZ.mGAqAABhQZ;6a16Z.mGAqAABhiU|6a16Z.mGAqAABhiU" id="option6a16Z.mGAqAABhiU">Ver : Button</option>
+<option value="shape|25.0|438.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;ua16Z.mGAqAABhiY|#v5nyZ.mGAqAABhQZ;ua16Z.mGAqAABhiY|ua16Z.mGAqAABhiY" id="optionua16Z.mGAqAABhiY">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|431.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;Ja16Z.mGAqAABhid|#v5nyZ.mGAqAABhQZ;Ja16Z.mGAqAABhid|Ja16Z.mGAqAABhid" id="optionJa16Z.mGAqAABhid">Ver : Button</option>
+<option value="shape|25.0|471.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;hJt6Z.mGAqAABhiv|#v5nyZ.mGAqAABhQZ;hJt6Z.mGAqAABhiv|hJt6Z.mGAqAABhiv" id="optionhJt6Z.mGAqAABhiv">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|464.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;PJt6Z.mGAqAABhi0|#v5nyZ.mGAqAABhQZ;PJt6Z.mGAqAABhi0|PJt6Z.mGAqAABhi0" id="optionPJt6Z.mGAqAABhi0">Ver : Button</option>
+<option value="shape|25.0|511.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;Ypt6Z.mGAqAABhi4|#v5nyZ.mGAqAABhQZ;Ypt6Z.mGAqAABhi4|Ypt6Z.mGAqAABhi4" id="optionYpt6Z.mGAqAABhi4">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|504.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;spt6Z.mGAqAABhi9|#v5nyZ.mGAqAABhQZ;spt6Z.mGAqAABhi9|spt6Z.mGAqAABhi9" id="optionspt6Z.mGAqAABhi9">Ver : Button</option>
+<option value="shape|25.0|551.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;apt6Z.mGAqAABhjB|#v5nyZ.mGAqAABhQZ;apt6Z.mGAqAABhjB|apt6Z.mGAqAABhjB" id="optionapt6Z.mGAqAABhjB">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|544.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;ept6Z.mGAqAABhjG|#v5nyZ.mGAqAABhQZ;ept6Z.mGAqAABhjG|ept6Z.mGAqAABhjG" id="optionept6Z.mGAqAABhjG">Ver : Button</option>
+<option value="shape|25.0|591.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;ppt6Z.mGAqAABhjK|#v5nyZ.mGAqAABhQZ;ppt6Z.mGAqAABhjK|ppt6Z.mGAqAABhjK" id="optionppt6Z.mGAqAABhjK">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|584.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;Npt6Z.mGAqAABhjP|#v5nyZ.mGAqAABhQZ;Npt6Z.mGAqAABhjP|Npt6Z.mGAqAABhjP" id="optionNpt6Z.mGAqAABhjP">Ver : Button</option>
+<option value="shape|25.0|625.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;Lpt6Z.mGAqAABhjT|#v5nyZ.mGAqAABhQZ;Lpt6Z.mGAqAABhjT|Lpt6Z.mGAqAABhjT" id="optionLpt6Z.mGAqAABhjT">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|618.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;fpt6Z.mGAqAABhjY|#v5nyZ.mGAqAABhQZ;fpt6Z.mGAqAABhjY|fpt6Z.mGAqAABhjY" id="optionfpt6Z.mGAqAABhjY">Ver : Button</option>
+<option value="shape|25.0|665.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;IZt6Z.mGAqAABhjc|#v5nyZ.mGAqAABhQZ;IZt6Z.mGAqAABhjc|IZt6Z.mGAqAABhjc" id="optionIZt6Z.mGAqAABhjc">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|658.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;UZt6Z.mGAqAABhjh|#v5nyZ.mGAqAABhQZ;UZt6Z.mGAqAABhjh|UZt6Z.mGAqAABhjh" id="optionUZt6Z.mGAqAABhjh">Ver : Button</option>
+<option value="shape|25.0|705.0|797.0|23.0|#v5nyZ.mGAqAABhQZ;CZt6Z.mGAqAABhjl|#v5nyZ.mGAqAABhQZ;CZt6Z.mGAqAABhjl|CZt6Z.mGAqAABhjl" id="optionCZt6Z.mGAqAABhjl">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</option>
+<option value="shape|856.0|698.0|87.0|30.0|#v5nyZ.mGAqAABhQZ;GZt6Z.mGAqAABhjq|#v5nyZ.mGAqAABhQZ;GZt6Z.mGAqAABhjq|GZt6Z.mGAqAABhjq" id="optionGZt6Z.mGAqAABhjq">Ver : Button</option>
+</select>							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+		<span data-value="v5nyZ.mGAqAABhQZ" style="display: none;" id="defaultState">
+		</span>
+		<span data-value="Web Wireframe - visualizar animal adopcion - Muestra listado de animales en adopci&#xf3;n y adoptados" style="display: none;" id="defaultPageTitleText">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style="position: relative; top: 24;">
+			<tr>
+				<td>
+					<img id="diagramv5nyZ.mGAqAABhQZ" src="../images/visualizar_animal_adopcion_Muestra_listado_de_animales_en_adopcin_y_adoptados.png" usemap="#diagramv5nyZ.mGAqAABhQZ_map" class="Image" width="1030" height="774"/>
+					<map name="diagramv5nyZ.mGAqAABhQZ_map">
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 698, 943, 728" coords2="856, 698, 943, 728" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_GZt6Z.mGAqAABhjq" href="#v5nyZ.mGAqAABhQZ;GZt6Z.mGAqAABhjq" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 705, 822, 728" coords2="25, 705, 822, 728" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_CZt6Z.mGAqAABhjl" href="#v5nyZ.mGAqAABhQZ;CZt6Z.mGAqAABhjl" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 658, 943, 688" coords2="856, 658, 943, 688" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_UZt6Z.mGAqAABhjh" href="#v5nyZ.mGAqAABhQZ;UZt6Z.mGAqAABhjh" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 665, 822, 688" coords2="25, 665, 822, 688" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_IZt6Z.mGAqAABhjc" href="#v5nyZ.mGAqAABhQZ;IZt6Z.mGAqAABhjc" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 618, 943, 648" coords2="856, 618, 943, 648" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_fpt6Z.mGAqAABhjY" href="#v5nyZ.mGAqAABhQZ;fpt6Z.mGAqAABhjY" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 625, 822, 648" coords2="25, 625, 822, 648" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Lpt6Z.mGAqAABhjT" href="#v5nyZ.mGAqAABhQZ;Lpt6Z.mGAqAABhjT" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 584, 943, 614" coords2="856, 584, 943, 614" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_Npt6Z.mGAqAABhjP" href="#v5nyZ.mGAqAABhQZ;Npt6Z.mGAqAABhjP" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 591, 822, 614" coords2="25, 591, 822, 614" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_ppt6Z.mGAqAABhjK" href="#v5nyZ.mGAqAABhQZ;ppt6Z.mGAqAABhjK" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 544, 943, 574" coords2="856, 544, 943, 574" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_ept6Z.mGAqAABhjG" href="#v5nyZ.mGAqAABhQZ;ept6Z.mGAqAABhjG" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 551, 822, 574" coords2="25, 551, 822, 574" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_apt6Z.mGAqAABhjB" href="#v5nyZ.mGAqAABhQZ;apt6Z.mGAqAABhjB" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 504, 943, 534" coords2="856, 504, 943, 534" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_spt6Z.mGAqAABhi9" href="#v5nyZ.mGAqAABhQZ;spt6Z.mGAqAABhi9" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 511, 822, 534" coords2="25, 511, 822, 534" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Ypt6Z.mGAqAABhi4" href="#v5nyZ.mGAqAABhQZ;Ypt6Z.mGAqAABhi4" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 464, 943, 494" coords2="856, 464, 943, 494" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_PJt6Z.mGAqAABhi0" href="#v5nyZ.mGAqAABhQZ;PJt6Z.mGAqAABhi0" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 471, 822, 494" coords2="25, 471, 822, 494" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_hJt6Z.mGAqAABhiv" href="#v5nyZ.mGAqAABhQZ;hJt6Z.mGAqAABhiv" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 431, 943, 461" coords2="856, 431, 943, 461" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_Ja16Z.mGAqAABhid" href="#v5nyZ.mGAqAABhQZ;Ja16Z.mGAqAABhid" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 438, 822, 461" coords2="25, 438, 822, 461" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_ua16Z.mGAqAABhiY" href="#v5nyZ.mGAqAABhQZ;ua16Z.mGAqAABhiY" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 391, 943, 421" coords2="856, 391, 943, 421" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_6a16Z.mGAqAABhiU" href="#v5nyZ.mGAqAABhQZ;6a16Z.mGAqAABhiU" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 398, 822, 421" coords2="25, 398, 822, 421" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Ca16Z.mGAqAABhiP" href="#v5nyZ.mGAqAABhQZ;Ca16Z.mGAqAABhiP" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 351, 943, 381" coords2="856, 351, 943, 381" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_Ua16Z.mGAqAABhiL" href="#v5nyZ.mGAqAABhQZ;Ua16Z.mGAqAABhiL" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 358, 822, 381" coords2="25, 358, 822, 381" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Aa16Z.mGAqAABhiG" href="#v5nyZ.mGAqAABhQZ;Aa16Z.mGAqAABhiG" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 311, 943, 341" coords2="856, 311, 943, 341" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_Xq16Z.mGAqAABhiC" href="#v5nyZ.mGAqAABhQZ;Xq16Z.mGAqAABhiC" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 318, 822, 341" coords2="25, 318, 822, 341" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_dq16Z.mGAqAABhh9" href="#v5nyZ.mGAqAABhQZ;dq16Z.mGAqAABhh9" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 276, 943, 306" coords2="856, 276, 943, 306" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_CtF6Z.mGAqAABhhq" href="#v5nyZ.mGAqAABhQZ;CtF6Z.mGAqAABhhq" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 284, 822, 307" coords2="25, 284, 822, 307" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_otF6Z.mGAqAABhhl" href="#v5nyZ.mGAqAABhQZ;otF6Z.mGAqAABhhl" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 236, 943, 266" coords2="856, 236, 943, 266" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_nNF6Z.mGAqAABhhh" href="#v5nyZ.mGAqAABhQZ;nNF6Z.mGAqAABhhh" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 244, 822, 267" coords2="25, 244, 822, 267" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_RNF6Z.mGAqAABhhc" href="#v5nyZ.mGAqAABhQZ;RNF6Z.mGAqAABhhc" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 196, 943, 226" coords2="856, 196, 943, 226" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_4a56Z.mGAqAABhhP" href="#v5nyZ.mGAqAABhQZ;4a56Z.mGAqAABhhP" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 204, 822, 227" coords2="25, 204, 822, 227" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Pq56Z.mGAqAABhhK" href="#v5nyZ.mGAqAABhQZ;Pq56Z.mGAqAABhhK" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="43, 82, 714, 132" coords2="43, 82, 714, 132" shape="rect" alt="Listado de animales:Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_YD06Z.mGAqAABheR" href="#v5nyZ.mGAqAABhQZ;YD06Z.mGAqAABheR" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="553, 81, 648, 111" coords2="553, 81, 648, 111" shape="rect" alt="Agregar:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_djY6Z.mGAqAABhd4" href="#v5nyZ.mGAqAABhQZ;djY6Z.mGAqAABhd4" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="675, 81, 777, 111" coords2="675, 81, 777, 111" shape="rect" alt="Combo Box:Combo Box" id="areadiagramv5nyZ.mGAqAABhQZ_map_rEraZ.mGAqAABhcE" href="#v5nyZ.mGAqAABhQZ;rEraZ.mGAqAABhcE" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="856, 157, 943, 187" coords2="856, 157, 943, 187" shape="rect" alt="Ver:Button" id="areadiagramv5nyZ.mGAqAABhQZ_map_W1hqZ.mGAqAABhWL" href="#v5nyZ.mGAqAABhQZ;W1hqZ.mGAqAABhWL" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="25, 164, 821, 186" coords2="25, 164, 821, 186" shape="rect" alt="Nombre animal            Especie            Raza              Edad    Estado           Descripcion      :Label" id="areadiagramv5nyZ.mGAqAABhQZ_map_Gn8qZ.mGAqAABhV1" href="#v5nyZ.mGAqAABhQZ;Gn8qZ.mGAqAABhV1" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="803, 81, 997, 111" coords2="803, 81, 997, 111" shape="rect" alt="Badge:Badge" id="areadiagramv5nyZ.mGAqAABhQZ_map_tzUKZ.mGAqAABhQ7" href="#v5nyZ.mGAqAABhQZ;tzUKZ.mGAqAABhQ7" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+<area imageId="diagramv5nyZ.mGAqAABhQZ" coords="2, 2, 1026, 770" coords2="2, 2, 1026, 770" shape="rect" alt="Web Browser:Browser" id="areadiagramv5nyZ.mGAqAABhQZ_map_8FnyZ.mGAqAABhQa" href="#v5nyZ.mGAqAABhQZ;8FnyZ.mGAqAABhQa" onmouseover="hideReferenceIcon(),hideSubdiagramIcon(),hideTransitorIcon()" onmousedown="clearSpotLight();"/>
+</map>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<p>
+	</p>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="Category">
+				Elements			</td>
+		</tr>
+		<tr>
+			<td style="height: 5px">
+			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0" id="elementsv5nyZ.mGAqAABhQZ">
+		<tr>
+			<td colSpan="4" class="TableHeaderLine">
+			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine1">
+			</td>
+		</tr>
+		<tr class="TableHeader">
+			<td class="TableCellSpaceHolder10Px">
+			</td>
+			<td width="30%">
+<span class="TableHeaderText">Display Text</span>			</td>
+			<td class="TableCellSpaceHolder20Px">
+			</td>
+			<td>
+<span class="TableHeaderText">Description</span>			</td>
+		</tr>
+		<tr>
+			<td colSpan="4" class="TableHeaderLine2">
+			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Browser.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Browser.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Web Browser : Browser</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;8FnyZ.mGAqAABhQa"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Badge.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Badge.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Badge : Badge</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;tzUKZ.mGAqAABhQ7"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Gn8qZ.mGAqAABhV1"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;W1hqZ.mGAqAABhWL"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/ComboBox.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/ComboBox.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Combo Box : Combo Box</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;rEraZ.mGAqAABhcE"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Agregar : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;djY6Z.mGAqAABhd4"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Listado de animales : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;YD06Z.mGAqAABheR"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Pq56Z.mGAqAABhhK"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;4a56Z.mGAqAABhhP"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;RNF6Z.mGAqAABhhc"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;nNF6Z.mGAqAABhhh"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;otF6Z.mGAqAABhhl"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;CtF6Z.mGAqAABhhq"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;dq16Z.mGAqAABhh9"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Xq16Z.mGAqAABhiC"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Aa16Z.mGAqAABhiG"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Ua16Z.mGAqAABhiL"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Ca16Z.mGAqAABhiP"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;6a16Z.mGAqAABhiU"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;ua16Z.mGAqAABhiY"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Ja16Z.mGAqAABhid"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;hJt6Z.mGAqAABhiv"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;PJt6Z.mGAqAABhi0"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Ypt6Z.mGAqAABhi4"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;spt6Z.mGAqAABhi9"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;apt6Z.mGAqAABhjB"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;ept6Z.mGAqAABhjG"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;ppt6Z.mGAqAABhjK"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Npt6Z.mGAqAABhjP"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;Lpt6Z.mGAqAABhjT"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;fpt6Z.mGAqAABhjY"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;IZt6Z.mGAqAABhjc"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;UZt6Z.mGAqAABhjh"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow2">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Label.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Label.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Nombre animal            Especie            Raza              Edad    Estado           Descripcion       : Label</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;CZt6Z.mGAqAABhjl"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+		<tr class="TableRow1">
+			<td>
+			</td>
+			<td>
+				<span class="TableContent">
+					<div style="float: left; width: 18px !important;height: 18px !important;background-image:url(../images/icons/Button.png) !important; background-image:url(''); filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/icons/Button.png'); background-repeat: no-repeat; background-size: contain;">
+					</div>
+					&nbsp; <span class="TableContent">Ver : Button</span>				</span>
+<a name="v5nyZ.mGAqAABhQZ;GZt6Z.mGAqAABhjq"></a>			</td>
+			<td>
+			</td>
+			<td style="padding: 5px 0">
+<span class="TableContent Documentation"></span>			</td>
+		</tr>
+	</table>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="TableCellSpaceHolder1PxTall">
+			</td>
+		</tr>
+		<tr>
+			<td class="TableFooter">
+			</td>
+		</tr>
+	</table>
+	<div style="width:370px; height:255px; position: fixed; _position: absolute; overflow: scroll; background-color: #F0F0F0; top: 100px; left: 100px; padding: 10px; display: none;" id="wireframeStatesDialog">
+		<span data-value="Web Wireframe - visualizar animal adopcion - Muestra listado de animales en adopci&#xf3;n y adoptados" style="display: none;" id="pageTitleTextv5nyZ.mGAqAABhQZ">
+		</span>
+		<table border="0" cellpadding="0" width="100%" cellspacing="0" style=" left: 30; top: 30; width: 340; height: 225; position: absolute; z-index: 10; background: white; border: black 3px solid; padding: 15px 20px 10px 20px; text-align: center;">
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapev5nyZ.mGAqAABhQZ', 'diagramv5nyZ.mGAqAABhQZ', 'none', 'elementsv5nyZ.mGAqAABhQZ', 'PageTitleText', 'pageTitleTextv5nyZ.mGAqAABhQZ')"><img src="../images/visualizar_animal_adopcion_Muestra_listado_de_animales_en_adopcin_y_adoptados_preview.png" class="Image" style=" width: 266; height: 200; border: none !important;"/>
+</a>				</td>
+			</tr>
+			<tr>
+				<td>
+<a href="javascript:okWireframeStatesDialog('selectShapev5nyZ.mGAqAABhQZ', 'diagramv5nyZ.mGAqAABhQZ', 'none', 'elementsv5nyZ.mGAqAABhQZ', 'PageTitleText', 'pageTitleTextv5nyZ.mGAqAABhQZ')"><span style="color: black !important" class="TableContent ItemLink">Muestra listado de animales en adopción y adoptados</span></a>				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="height: 20px">
+	</div>
+	<table border="0" cellpadding="0" width="100%" cellspacing="0">
+		<tr>
+			<td class="FooterLine">
+			</td>
+		</tr>
+	</table>
+	<div class="HeaderText">
+		Vetasoft_	</div>
+</body>
+</html>
